@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\BookRequest;
 use App\Book; //importez l'alias de la classe
 use App\Author;
 use App\Genre;
@@ -19,7 +18,7 @@ class BookController extends Controller
      */
     public function index()
     {   
-        $books = Book::withoutGlobalScopes()->paginate(10);
+        $books = Book::paginate(10);
 
         return view('back.book.index', ['books' => $books]);
     }
@@ -44,9 +43,16 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BookRequest $request)
+    public function store(Request $request)
     {
-     
+        $this->validate($request, [
+            'title' => 'required|string|unique:books',
+            'description' => 'required|string',
+            'genre_id' => 'integer',
+            'authors' => 'array',
+            'authors.*' => 'integer',
+            'status' => 'in:published,unpublished'
+        ]);
         
         $book = Book::create($request->all());
 
@@ -94,7 +100,7 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $book = Book::withoutGlobalScopes()->find($id);
+        $book = Book::find($id);
         //permet de récupérer une collection type array avec en clé id => name
         $checkedAuthors = $book->authors()->pluck('id')->all();
         $authors = Author::pluck('name', 'id')->all();
@@ -110,9 +116,16 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BookRequest $request, $id)
+    public function update(Request $request, $id)
     {
-
+        $this->validate($request, [
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'genre_id' => 'integer',
+            'authors' => 'array',
+            'authors.*' => 'integer',
+            'status' => 'in:published,unpublished'
+        ]);
         
         // Il faut repérer le livre que l'on souhaite modifier
         $book = Book::find($id);

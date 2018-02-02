@@ -22,9 +22,6 @@ Route::get('author/{id}', 'FrontController@showBookByAuthor');
 Route::get('genre/{id}', 'FrontController@showBookByGenre')->where(['id' => '[0-9]+']);
 //Route pour envoyer le formulaire
 Route::post('votez/quiz', 'FrontController@create')->name('vote');
-// Route vers les auteurs publiés
-Route::get('authorPublished', 'FrontController@showByPublishedAuthor')->name('PublishedAuthor');
-
 
 Auth::routes();
 
