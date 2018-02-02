@@ -173,4 +173,3 @@ class BookController extends Controller
     }
 }
 
-//COUCOU
