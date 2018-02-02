@@ -32,7 +32,8 @@ class FrontController extends Controller
         $path = 'book' . $prefix;
 
         $books = Cache::remember($path, 60*24, function(){
-            return Book::published()->with('picture', 'authors')->paginate(5);
+            return Book::with('picture', 'authors')->paginate(5);
+            // return Book::published()->with('picture', 'authors')->paginate(5);
         });
 
 
@@ -86,6 +87,13 @@ class FrontController extends Controller
 
 
 
+    }
+
+    public function showByPublishedAuthor() {
+
+        $authors = Author::published()->paginate(4);
+
+        return view("front.authorsPublished", ['authors' => $authors]);
     }
 
 }
