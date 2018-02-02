@@ -12,7 +12,7 @@ class Book extends Model
 
     //ici le setter va récupérer la valeur à insérer en base de données
     // Nous pourrons alors vérifier sa valeur avant que le modèle n'insère la donnée en base de données
-    
+
     public function setGenreIdAttribute($value){
         // dans setGenreIdAttribute genreId == genre_id, Merveille laravel
         if($value == 0) {
